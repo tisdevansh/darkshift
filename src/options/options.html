@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DarkShift Settings</title>
+  <link rel="icon" href="../../icons/on-32.png">
+  <link rel="stylesheet" href="../ui/theme.css">
+  <link rel="stylesheet" href="options.css">
+  <script src="../vendor/qrcode.js"></script>
+  <script type="module" src="options.js"></script>
+</head>
+<body>
+  <aside class="side">
+    <div class="brand">
+      <span class="logo"><img src="../../icons/on-48.png" alt=""></span>
+      <div><div class="name">DarkShift</div><div class="tag">v<span id="version"></span> · free &amp; open source</div></div>
+    </div>
+    <nav>
+      <a href="#general" class="active">General</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#sites">Site rules</a>
+      <a href="#shortcuts">Shortcuts</a>
+      <a href="#backup">Backup</a>
+      <a href="#support" class="nav-heart">Support ❤</a>
+    </nav>
+    <div class="side-foot">Made with <span class="heart">❤</span> by <strong>Devansh Agarwal</strong></div>
+  </aside>
+
+  <main>
+    <section class="welcome card" id="welcome" hidden>
+      <h1>Welcome to DarkShift 🌙</h1>
+      <p>Every website is now dark. Click the DarkShift icon in your toolbar to switch a tab, a site or all sites between <b>Dark</b>, <b>Filter</b> and <b>Off</b>, and to tune brightness, contrast and blue light.</p>
+      <p class="muted">Tip: pin the extension (puzzle icon → pin) so it's always one click away. Already-open tabs were converted automatically.</p>
+    </section>
+
+    <section id="general" class="panel">
+      <h2>General</h2>
+      <div class="card rows">
+        <div class="row">
+          <div><div class="row-title">DarkShift enabled</div><div class="row-sub">Master switch for every tab. Shortcut: Alt+Shift+P</div></div>
+          <span class="switch"><input type="checkbox" id="enabled"><span class="track"></span></span>
+        </div>
+        <div class="row">
+          <div><div class="row-title">Default mode for all sites</div><div class="row-sub">Used unless a site rule or a tab override says otherwise.</div></div>
+          <div class="seg" id="defaultMode">
+            <button data-mode="dark">Dark</button><button data-mode="filter">Filter</button><button data-mode="off">Off</button>
+          </div>
+        </div>
+      </div>
+      <div class="explain">
+        <div class="card"><b>Dark</b><span>Rewrites the page's own colors into a dark palette. Keeps images, videos and colored highlights (like green "correct" answers) intact. Best quality.</span></div>
+        <div class="card"><b>Filter</b><span>Inverts the whole page and flips images back. Use it for canvas-heavy apps or the rare site Dark can't handle.</span></div>
+        <div class="card"><b>Off</b><span>Leaves the page exactly as designed.</span></div>
+      </div>
+    </section>
+
+    <section id="schedule" class="panel">
+      <h2>Schedule</h2>
+      <div class="card rows">
+        <div class="row">
+          <div><div class="row-title">When should the default mode apply?</div><div class="row-sub">Site rules and tab overrides always apply.</div></div>
+          <div class="seg" id="scheduleType">
+            <button data-type="always">Always</button><button data-type="system">System theme</button><button data-type="time">Custom time</button>
+          </div>
+        </div>
+        <div class="row" id="timeRow">
+          <div><div class="row-title">Active hours</div><div class="row-sub" id="scheduleNow"></div></div>
+          <div class="times">
+            <label>From <input type="time" id="start"></label>
+            <label>To <input type="time" id="end"></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sites" class="panel">
+      <h2>Site rules</h2>
+      <div class="card">
+        <form class="add-site" id="addSite">
+          <input type="text" id="newHost" placeholder="example.com" autocomplete="off" spellcheck="false" aria-label="Website">
+          <select id="newMode" aria-label="Mode"><option value="dark">Dark</option><option value="filter">Filter</option><option value="off">Off</option></select>
+          <button class="btn primary" type="submit">Add rule</button>
+        </form>
+        <div class="site-search"><input type="search" id="siteFilter" placeholder="Search rules…" aria-label="Search rules"></div>
+        <table class="site-table">
+          <thead><tr><th>Website</th><th>Mode</th><th>Custom adjust</th><th></th></tr></thead>
+          <tbody id="siteRows"></tbody>
+        </table>
+        <div class="empty" id="sitesEmpty">No site rules yet. Use the popup's "This site" scope, or add one above.</div>
+      </div>
+    </section>
+
+    <section id="shortcuts" class="panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="card rows" id="shortcutRows"></div>
+      <p class="muted">Change shortcuts at <a href="#" id="openShortcuts">your browser's extension shortcuts page</a>.</p>
+    </section>
+
+    <section id="backup" class="panel">
+      <h2>Backup</h2>
+      <div class="card rows">
+        <div class="row">
+          <div><div class="row-title">Export settings</div><div class="row-sub">Download your settings and site rules as JSON.</div></div>
+          <button class="btn" id="export">Export</button>
+        </div>
+        <div class="row">
+          <div><div class="row-title">Import settings</div><div class="row-sub" id="importMsg">Restore from a DarkShift JSON file.</div></div>
+          <label class="btn">Import<input type="file" id="import" accept="application/json,.json" hidden></label>
+        </div>
+        <div class="row">
+          <div><div class="row-title">Reset everything</div><div class="row-sub">Back to defaults and remove all site rules.</div></div>
+          <button class="btn danger" id="reset">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="panel">
+      <h2>Support DarkShift</h2>
+      <div class="card support-card">
+        <div class="support-copy">
+          <h3>Free forever. Powered by kindness.</h3>
+          <p>Most dark mode extensions put their best features behind a monthly subscription. DarkShift gives you everything for free: no ads, no tracking, no paywall, and the code is open source.</p>
+          <p>If DarkShift makes late-night browsing easier on your eyes, a small tip helps me keep improving it. Totally optional, and always appreciated.</p>
+          <div class="amounts" role="group" aria-label="Amount">
+            <button data-amount="19">₹19</button><button data-amount="49">₹49</button><button data-amount="99">₹99</button><button data-amount="custom">Custom</button>
+          </div>
+          <div class="custom-amount" id="customWrap" hidden>
+            <span>₹</span><input type="number" id="customAmount" min="1" max="100000" step="1" placeholder="Enter amount">
+          </div>
+          <div class="upi-row"><code id="upiId"></code><button class="btn small" id="copyUpi"><span>Copy</span></button></div>
+          <button class="btn primary" id="supportDone">❤ I've supported</button>
+          <span class="muted" id="supportThanks"></span>
+        </div>
+        <div class="qr-wrap">
+          <canvas id="qr" width="200" height="200" aria-label="UPI payment QR code"></canvas>
+          <div class="qr-amount" id="qrAmount">₹19</div>
+          <div class="muted small">Scan with GPay, PhonePe, Paytm or any UPI app</div>
+        </div>
+      </div>
+      <div class="card about">
+        <b>About</b>
+        <p>DarkShift is built by <strong>Devansh Agarwal</strong> and released under the MIT license. It never sends your browsing data anywhere; settings stay in your browser.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

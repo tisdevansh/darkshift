@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DarkShift</title>
+  <link rel="stylesheet" href="../ui/theme.css">
+  <link rel="stylesheet" href="popup.css">
+  <script src="../vendor/qrcode.js"></script>
+  <script type="module" src="popup.js"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20.4 14.6A8.5 8.5 0 0 1 9.4 3.6a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.1 15.4a.6.6 0 0 0-.7-.8Z"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M12 3.5a8.5 8.5 0 0 1 0 17Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></g></symbol>
+    <symbol id="i-power" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.8a7.5 7.5 0 1 0 11.4 0"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.7-1l2.4 1 2-3.4ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" transform="translate(-1 0)"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.3C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.6 1.1 5.2 3 1.6-1.9 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.2C19.5 16.4 12 21 12 21Z"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></g></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5M4 4v4.5h4.5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></g></symbol>
+  </svg>
+
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><svg class="icon"><use href="#i-moon"/></svg></span>
+      <div>
+        <div class="name">DarkShift</div>
+        <div class="tag">Dark mode for every website</div>
+      </div>
+    </div>
+    <label class="power" title="Turn DarkShift on or off everywhere (Alt+Shift+P)">
+      <span class="power-label" id="powerLabel">On</span>
+      <span class="switch"><input type="checkbox" id="power" aria-label="DarkShift on or off"><span class="track"></span></span>
+    </label>
+  </header>
+
+  <main>
+    <section class="reminder card" id="reminder" hidden>
+      <svg class="icon heart-ico"><use href="#i-heart"/></svg>
+      <div class="reminder-text">
+        <strong>DarkShift is free for everyone.</strong>
+        If it saves your eyes, a small ₹19 tip helps keep it that way.
+      </div>
+      <button class="btn heart small" id="reminderSupport">Support</button>
+      <button class="icon-btn" id="reminderClose" aria-label="Dismiss"><svg class="icon"><use href="#i-x"/></svg></button>
+    </section>
+
+    <section class="card site" id="siteCard">
+      <div class="site-head">
+        <img class="favicon" id="favicon" alt="">
+        <div class="site-meta">
+          <div class="host" id="host">—</div>
+          <div class="status" id="status">Loading…</div>
+        </div>
+        <span class="chip" id="modeChip">—</span>
+      </div>
+
+      <div class="unsupported" id="unsupported" hidden>
+        <svg class="icon"><use href="#i-lock"/></svg>
+        <span id="unsupportedText">Browsers don't let extensions change this page.</span>
+      </div>
+
+      <div id="controls">
+        <div class="seg modes" role="group" aria-label="Mode">
+          <button data-mode="dark"><svg class="icon"><use href="#i-moon"/></svg>Dark</button>
+          <button data-mode="filter"><svg class="icon"><use href="#i-filter"/></svg>Filter</button>
+          <button data-mode="off"><svg class="icon"><use href="#i-sun"/></svg>Off</button>
+        </div>
+        <div class="scope-row">
+          <span class="scope-label">Apply to</span>
+          <div class="seg scope" role="group" aria-label="Apply to">
+            <button data-scope="tab">This tab</button>
+            <button data-scope="site">This site</button>
+            <button data-scope="all">All sites</button>
+          </div>
+        </div>
+        <div class="scope-hint" id="scopeHint"></div>
+      </div>
+    </section>
+
+    <section class="card adjust" id="adjustCard">
+      <div class="card-head">
+        <span class="eyebrow">Adjust</span>
+        <label class="site-only" title="Use separate settings for this site">
+          <span id="siteOnlyLabel">Only this site</span>
+          <span class="switch small"><input type="checkbox" id="siteOnly"><span class="track"></span></span>
+        </label>
+      </div>
+      <div class="sliders" id="sliders"></div>
+      <div class="adjust-foot">
+        <button class="btn ghost small" id="resetAdjust"><svg class="icon"><use href="#i-reset"/></svg>Reset</button>
+      </div>
+    </section>
+
+    <section class="card tabs" id="tabsCard">
+      <button class="tabs-toggle" id="tabsToggle" aria-expanded="false">
+        <span class="eyebrow">Open tabs</span>
+        <span class="tabs-count" id="tabsCount"></span>
+        <svg class="icon chev"><use href="#i-chev"/></svg>
+      </button>
+      <div class="tabs-body" id="tabsBody" hidden>
+        <div class="tabs-tools">
+          <label class="check"><input type="checkbox" id="selectAll"> <span id="selectedCount">Select all</span></label>
+          <div class="tabs-actions">
+            <button class="btn small" data-bulk="dark" title="Dark mode for selected tabs"><svg class="icon"><use href="#i-moon"/></svg></button>
+            <button class="btn small" data-bulk="filter" title="Filter mode for selected tabs"><svg class="icon"><use href="#i-filter"/></svg></button>
+            <button class="btn small" data-bulk="off" title="Turn off for selected tabs"><svg class="icon"><use href="#i-sun"/></svg></button>
+            <button class="btn small" data-bulk="clear" title="Back to site/default setting"><svg class="icon"><use href="#i-reset"/></svg></button>
+          </div>
+        </div>
+        <ul class="tab-list" id="tabList"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span class="made">Made with <svg class="icon tiny heart-ico"><use href="#i-heart"/></svg> by <strong>Devansh Agarwal</strong></span>
+    <div class="foot-actions">
+      <button class="btn heart small" id="supportBtn"><svg class="icon"><use href="#i-heart"/></svg>Support</button>
+      <button class="icon-btn" id="settingsBtn" title="Settings"><svg class="icon"><use href="#i-gear"/></svg></button>
+    </div>
+  </footer>
+
+  <div class="sheet-backdrop" id="supportSheet" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
+      <button class="icon-btn sheet-close" id="supportClose" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+      <div class="sheet-head">
+        <span class="big-heart"><svg class="icon"><use href="#i-heart"/></svg></span>
+        <h2 id="supportTitle">Keep DarkShift free</h2>
+        <p>Most dark mode extensions lock features behind a paid subscription. DarkShift is <strong>free forever</strong>: no ads, no tracking, no paywall. If it's easier on your eyes, a small tip helps a lot.</p>
+      </div>
+      <div class="amounts" role="group" aria-label="Amount">
+        <button data-amount="19">₹19</button>
+        <button data-amount="49">₹49</button>
+        <button data-amount="99">₹99</button>
+        <button data-amount="custom">Custom</button>
+      </div>
+      <div class="custom-amount" id="customWrap" hidden>
+        <span>₹</span><input type="number" id="customAmount" min="1" max="100000" step="1" placeholder="Enter amount" inputmode="numeric">
+      </div>
+      <div class="qr-wrap">
+        <canvas id="qr" width="180" height="180" aria-label="UPI payment QR code"></canvas>
+        <div class="qr-amount" id="qrAmount">₹19</div>
+      </div>
+      <p class="qr-hint">Scan with any UPI app (GPay, PhonePe, Paytm, BHIM)</p>
+      <div class="upi-row">
+        <code id="upiId"></code>
+        <button class="btn small" id="copyUpi"><svg class="icon"><use href="#i-copy"/></svg><span>Copy</span></button>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn ghost" id="supportLater">Maybe later</button>
+        <button class="btn primary" id="supportDone"><svg class="icon"><use href="#i-heart"/></svg>I've supported</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

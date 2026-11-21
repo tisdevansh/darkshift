@@ -1,0 +1,16 @@
+{
+  "name": "darkshift",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DarkShift: free, open-source dark mode for every website (Chrome, Edge, Brave).",
+  "author": "Devansh Agarwal",
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/run.mjs",
+    "icons": "python tools/make_icons.py",
+    "package": "node tools/package.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.49.1"
+  }
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DarkShift test page</title>
+  <link rel="stylesheet" href="/same.css">
+  <link rel="stylesheet" href="http://127.0.0.1:__XPORT__/cross.css">
+  <style>
+    @import url("/imported.css");
+    :root {
+      --bg: #ffffff;
+      --text: #1f2328;
+      --brand: #0969da;
+      --bs-body-bg-rgb: 255, 255, 255;
+      --card: 0 0% 98%;
+      --ring: var(--brand);
+    }
+    body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 16px; }
+    .var-card { background: rgba(var(--bs-body-bg-rgb), 1); border: 1px solid #d0d7de; padding: 8px; }
+    .hsl-card { background: hsl(var(--card)); padding: 8px; }
+    .ring { outline: 2px solid var(--ring); }
+    .muted { color: #57606a; }
+    .correct { background: #d4edda; color: #155724; padding: 8px; transition: background-color .2s; }
+    .correct-strong { background-color: #28a745; color: #fff; padding: 8px; }
+    .wrong { background: #f8d7da; color: #721c24; padding: 8px; }
+    .grad { background-image: linear-gradient(#ffffff, #f0f0f0); height: 20px; }
+    @media (min-width: 1px) { .media-box { background-color: whitesmoke; } }
+    @keyframes flash { from { background-color: #ffffff; opacity: 1; } to { background-color: #eeeeee; opacity: .9; } }
+    .anim { animation: flash 1s infinite alternate; }
+    .nest { background: #fafafa; & .child { background: #ffffff; color: #000; } }
+    img { display: block; }
+  </style>
+</head>
+<body>
+  <h1>Heading</h1>
+  <p class="muted">Muted paragraph text</p>
+  <a href="#" id="link">A link</a>
+  <div class="same-box" id="same">same-origin stylesheet</div>
+  <div class="cross-box" id="cross">cross-origin stylesheet</div>
+  <div class="imported-box" id="imported">imported stylesheet</div>
+  <div class="var-card ring" id="varcard">rgb triplet var</div>
+  <div class="hsl-card" id="hslcard">hsl triplet var</div>
+  <div class="correct" id="correct">Correct answer!</div>
+  <div class="correct-strong" id="correctStrong">Correct (strong)</div>
+  <div class="wrong" id="wrong">Wrong answer</div>
+  <div class="grad" id="grad"></div>
+  <div class="media-box" id="media">media query</div>
+  <div class="anim" id="anim">animated</div>
+  <div class="nest"><div class="child" id="nested">nested rule</div></div>
+  <div style="background-color: #ffffff; color: #111111" id="inline">inline style</div>
+  <div style="background: var(--bg)" id="inlineVar">inline var</div>
+  <table><tr><td bgcolor="#ffffff" id="bgcolor">bgcolor cell</td></tr></table>
+  <svg width="20" height="20"><rect id="svgrect" width="20" height="20" fill="#000000"/></svg>
+  <x-card id="host"></x-card>
+  <div id="cssinjs">css-in-js</div>
+  <div id="later-slot"></div>
+  <img id="img" width="40" height="20" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Crect width='40' height='20' fill='%23ff0000'/%3E%3C/svg%3E">
+  <img id="logo" width="120" height="40" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M5 5h10v30H5zM25 5h30v8H25zM25 27h30v8H25zM65 5h8v30h-8z' fill='%23000'/%3E%3C/svg%3E">
+  <img id="xlogo" width="120" height="40" alt="" src="http://127.0.0.1:__XPORT__/logo.svg">
+  <iframe id="frame" src="/frame.html" width="200" height="60"></iframe>
+  <button id="btn">Button</button>
+  <input id="input" value="input">
+
+  <script>
+    customElements.define('x-card', class extends HTMLElement {
+      constructor() {
+        super();
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = '<style>.inner{background:#ffffff;color:#222222;padding:6px}</style><div class="inner" id="inner">shadow dom</div>';
+      }
+    });
+    // CSS-in-JS style injection through the CSSOM after load.
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const s = document.createElement('style');
+        document.head.appendChild(s);
+        s.sheet.insertRule('.jss-1 { background-color: #ffffff; color: #333333; }', 0);
+        document.getElementById('cssinjs').className = 'jss-1';
+        const later = document.createElement('div');
+        later.id = 'later';
+        later.style.backgroundColor = 'white';
+        later.textContent = 'added later';
+        document.getElementById('later-slot').appendChild(later);
+      }, 300);
+    });
+  </script>
+</body>
+</html>

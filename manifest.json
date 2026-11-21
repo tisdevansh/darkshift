@@ -1,0 +1,75 @@
+{
+  "manifest_version": 3,
+  "name": "DarkShift — Dark Mode for Every Website",
+  "short_name": "DarkShift",
+  "version": "1.0.0",
+  "description": "Free, open-source dark mode for every website. Per-tab, per-site or everywhere, with brightness, contrast, blue-light and schedule controls.",
+  "author": "Devansh Agarwal",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage", "scripting", "contextMenus", "alarms"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "DarkShift",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/on-16.png",
+      "32": "icons/on-32.png",
+      "48": "icons/on-48.png",
+      "128": "icons/on-128.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/on-16.png",
+    "32": "icons/on-32.png",
+    "48": "icons/on-48.png",
+    "128": "icons/on-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/hook.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "world": "MAIN"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/color.js", "src/content/css.js", "src/content/engine.js", "src/content/main.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true
+    }
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+Shift+U" },
+      "description": "Open DarkShift"
+    },
+    "toggle-site": {
+      "suggested_key": { "default": "Alt+Shift+D" },
+      "description": "Toggle dark mode for the current site"
+    },
+    "toggle-tab": {
+      "suggested_key": { "default": "Alt+Shift+X" },
+      "description": "Toggle dark mode for the current tab only"
+    },
+    "toggle-power": {
+      "suggested_key": { "default": "Alt+Shift+P" },
+      "description": "Turn DarkShift on / off everywhere"
+    },
+    "cycle-mode": {
+      "description": "Cycle Dark → Filter → Off for the current site"
+    }
+  }
+}
